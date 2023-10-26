@@ -1,0 +1,43 @@
+﻿@page
+@using DIYer.Models
+@model DIYer.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h3>Messenger</h3>
+<div class="row message-container">
+@foreach (var item in Model.ChatMessage) {
+        <div class="message">
+            <h2>@item.UserId</h2>
+            <h2>"Avatar"</h2>
+
+            <h5>@item.MessageText</h5>
+            @if( !string.IsNullOrEmpty(item.FileUrl) )
+            {
+                @if (item.FileName.EndsWith("jpg") || item.FileName.EndsWith("png"))
+                {
+                    <a asp-page-handler=""><img src="@item.FileUrl" height="50px" alt="file" /></a>
+                }
+                else
+                {
+                    <a asp-page-handler="">@item.FileName</a>
+                }
+
+        }
+            <div><p class="message-time justify-content-end d-flex">@item.CreatedAt</p></div>
+        </div>
+}
+
+</div>
+<div>
+<div class="justify-content-end d-flex">
+    <form asp-page-handler="AddMessage" enctype="multipart/form-data" method="post">
+        <input type="text" name="MessageText" placeholder="Text message" />
+        <input type="file" name="FileUrl" />
+        <button type="submit" class="btn btn-success btn-sm">Send Message</button>
+    </form>
+</div>
+</div>

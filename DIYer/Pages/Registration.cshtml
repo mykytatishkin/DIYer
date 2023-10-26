@@ -1,0 +1,48 @@
+﻿@page
+@model DIYer.Pages.RegistrationModel
+
+@{
+    ViewData["Title"] = "Registration";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h4>Registration</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ChatUser.Nick" class="control-label"></label>
+                <input asp-for="ChatUser.Nick" class="form-control" />
+                <span asp-validation-for="ChatUser.Nick" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChatUser.Email" class="control-label"></label>
+                <input asp-for="ChatUser.Email" class="form-control" />
+                <span asp-validation-for="ChatUser.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChatUser.Password" class="control-label"></label>
+                <input asp-for="ChatUser.Password" class="form-control" />
+                <span asp-validation-for="ChatUser.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Avatar" class="control-label"></label>
+                <input type="file" name="Avatar" class="form-control" />
+                <span asp-validation-for="ChatUser.Avatar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Login">Having account?</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
