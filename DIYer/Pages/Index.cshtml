@@ -9,35 +9,66 @@
 
 <h3>Messenger</h3>
 <div class="row message-container">
-@foreach (var item in Model.ChatMessage) {
-        <div class="message">
-            <h2>@item.UserId</h2>
-            <h2>"Avatar"</h2>
+    @foreach (var item in Model.ChatMessages)
+    {
+        string localUser = item.User.Id == Model.User.Id ? "local-user-message" : string.Empty;
 
-            <h5>@item.MessageText</h5>
-            @if( !string.IsNullOrEmpty(item.FileUrl) )
-            {
-                @if (item.FileName.EndsWith("jpg") || item.FileName.EndsWith("png"))
+        <div class="d-flex message-container @localUser">
+            <div class="avatar-box d-flex">
+                <img alt="avatar" src="data:image/png;base64,@item.User.Avatar" class="avatar">
+            </div>
+            <div class="message">
+                <p class="user-nick">@item.User.Nick</p>
+                @if (!string.IsNullOrEmpty(item.Message.FileUrl))
                 {
-                    <a asp-page-handler=""><img src="@item.FileUrl" height="50px" alt="file" /></a>
+                    if (item.Message.FileUrl.EndsWith("jpg") || item.Message.FileUrl.EndsWith("png"))
+                    {
+                        <a asp-page-handler=""><img src="@item.Message.FileUrl" height="50px" alt="file" onclick="downloadFile('@item.Message.FileUrl', '@item.Message.FileName')"></a>
+                    }
+                    else
+                    {
+                        <a asp-page-handler="">@item.Message.FileName</a>
+                    }
                 }
-                else
-                {
-                    <a asp-page-handler="">@item.FileName</a>
-                }
+                <p class="message-text">
+                    @item.Message.MessageText
+                </p>
+                <div>
+                    <p class="message-time justify-content-end d-flex">@item.Message.CreatedAt</p>
+                </div>
+            </div>
 
-        }
-            <div><p class="message-time justify-content-end d-flex">@item.CreatedAt</p></div>
         </div>
-}
+
+    }
 
 </div>
 <div>
 <div class="justify-content-end d-flex">
-    <form asp-page-handler="AddMessage" enctype="multipart/form-data" method="post">
-        <input type="text" name="MessageText" placeholder="Text message" />
-        <input type="file" name="FileUrl" />
-        <button type="submit" class="btn btn-success btn-sm">Send Message</button>
-    </form>
+        <form asp-page-handler="AddMessage" enctype="multipart/form-data" method="post" class="col message-form">
+            <div class="input-group">
+                <input type="text" name="MessageText" class="form-control input-message-text" placeholder="Write a message..." aria-label="User message">
+
+                <label for="file-upload" class="custom-file-upload">
+                    <i class="fa-solid fa-paperclip"></i>
+                </label>
+                <input id="file-upload" type="file" name="FileUrl" class="load-file-input" />
+
+                <button type="submit" class="btn btn-outline-warning btn-sm">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+
+        </form>
 </div>
 </div>
+
+<script>
+    function downloadFile(fileUrl, fileName) {
+        var downloadLink = document.createElement("a");
+        downloadLink.href = fileUrl;
+        downloadLink.download = fileName;  
+
+        downloadLink.click(); 
+    }
+</script>

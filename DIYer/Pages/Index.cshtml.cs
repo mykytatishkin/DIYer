@@ -22,8 +22,7 @@ namespace DIYer.Pages
         }
 
         [BindProperty(SupportsGet = true)]
-        public IList<ChatMessage> ChatMessages { get;set; } = default!;
-
+        public IList<MessageViewModel> ChatMessages { get; set; } = default!;
         [BindProperty(SupportsGet = true)]
         public ChatUser User { get; set; } = default!;
 
@@ -40,6 +39,7 @@ namespace DIYer.Pages
             {
                 return RedirectToPage("./Login");
             }
+
             User = await _context.ChatUser.FindAsync(loggedId);
             if (_context.ChatMessage != null)
             {
